@@ -16,13 +16,15 @@ class MainController extends AbstractController
      */
     public function index(): Response
     {
+        $data = $this->getDoctrine()->getRepository(Crud::class)->findAll();
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
+            'data' => $data
         ]);
     }
 
     /**
-     * @Route("create", name="create")
+     * @Route("/create", name="create")
      */
     public function create(Request $request)
     {
@@ -36,6 +38,8 @@ class MainController extends AbstractController
             $em->flush();
 
             $this->addFlash('notice','Submitted successfully!');
+
+            return $this->redirectToRoute('main');
         }
        return $this->render('main/create.html.twig',[
            'form' => $form -> createView()
