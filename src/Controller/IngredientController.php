@@ -63,7 +63,7 @@ class IngredientController extends AbstractController
             $em->persist($ingredient);
             $em->flush();
 
-            $this->addFlash('notice','Update successfully!');
+            $this->addFlash('sucess','Update successfully!');
 
             return $this->redirectToRoute('ingredient');
         }
@@ -85,7 +85,7 @@ class IngredientController extends AbstractController
         $em->remove($data);
         $em->flush();
 
-        $this->addFlash('notice','Remove successfully!');
+        $this->addFlash('sucess','Remove successfully!');
 
         return $this->redirectToRoute('ingredient');
         
