@@ -10,6 +10,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
                 <th scope="col">Content</th>
+                <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -18,6 +19,10 @@
                 <th scope="row"> {{data.id}}</th>
                 <td>{{data.title}}</td>
                 <td>{{data.content}}</td>
+                <td>
+                   <a href="{{ path('update' , {'id': data.id }) }}" class="btn btn-warning">Modifier</a>
+                   <a href="{{path('delete' , {'id': data.id }) }}" class="btn btn-danger">Supprimer</a>
+                </td>
                 </tr>
                 <tr>
             {% endfor %}
