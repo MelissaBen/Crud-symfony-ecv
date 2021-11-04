@@ -37,7 +37,7 @@ class MainController extends AbstractController
             $em->persist($crud);
             $em->flush();
 
-            $this->addFlash('notice','Submitted successfully!');
+            $this->addFlash('success','Submitted successfully!');
 
             return $this->redirectToRoute('main');
         }
@@ -61,7 +61,7 @@ class MainController extends AbstractController
             $em->persist($crud);
             $em->flush();
 
-            $this->addFlash('notice','Update successfully!');
+            $this->addFlash('success','Update successfully!');
 
             return $this->redirectToRoute('main');
         }
@@ -82,7 +82,7 @@ class MainController extends AbstractController
         $em->remove($data);
         $em->flush();
 
-        $this->addFlash('notice','Remove successfully!');
+        $this->addFlash('success', 'Supprimé avec succès');
 
         return $this->redirectToRoute('main');
         
