@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Ingredient;
+use App\Entity\Image;
 use App\Form\IngredientType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File;
+use Symfony\Component\Routing\Annotation\Route; 
 
 class IngredientController extends AbstractController
 {
@@ -18,6 +20,18 @@ class IngredientController extends AbstractController
     {
         $data = $this->getDoctrine()->getRepository(Ingredient::class)->findAll();
         return $this->render('ingredient/index.html.twig', [
+            'controller_name' => 'IngredientController',
+             'data' => $data
+
+        ]);
+    }
+    /**
+     * @Route("/ingredientForm", name="ingredientForm")
+     */
+    public function form(): Response
+    {
+        $data = $this->getDoctrine()->getRepository(Ingredient::class)->findAll();
+        return $this->render('ingredient/form.html.twig', [
             'controller_name' => 'IngredientController',
              'data' => $data
 
@@ -36,6 +50,25 @@ class IngredientController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $em = $this->getDoctrine()->getManager();
+
+            $path = $this->getParameter('kernel.project_dir') . '/public/images';
+            // recup l'image'  
+            $image = $ingredient->getImage();
+
+             // recup le file soumis ' 
+            $file = $image->getFile();
+
+            // recup un nom unique  ' 
+
+            $name =md5(uniqid()). '.' .$file->guessExtension();
+
+            // déplacer le fichier  
+
+            $file->move($path , $name);
+
+            // donner le nom à limage ' 
+            $image->setName($name);
+
             $em->persist($ingredient);
             $em->flush();
 
@@ -87,7 +120,7 @@ class IngredientController extends AbstractController
 
         $this->addFlash('sucess','Remove successfully!');
 
-        return $this->redirectToRoute('ingredient');
+        return $this->redirectToRoute('ingredientForm');
         
      
     }
