@@ -16,7 +16,7 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    private EmailVerifier $emailVerifier;
+    private  $emailVerifier;
 
     public function __construct(EmailVerifier $emailVerifier)
     {

@@ -4,7 +4,7 @@
 
 <div class="container m-5">
     <div class="row">
-        <h3 class="mt-5 mb-5">Update form</h3>
+        <h3 class="mt-5 mb-5"> Modifier la recette </h3>
         {% for message in app.flashes('sucess') %}
             <div class="alert alert-success">
             {{message}}
@@ -21,12 +21,14 @@
                 {{form_label(form.subtitle)}}
                 {{form_widget(form.subtitle ,{'attr':{'class':'form-control'}})}}
             </div> 
+            {{form_row(form.preparationTime)}}
+            {{form_row(form.cookingTime)}}
+            {{ form_row(form.steps) }}
             <div class="form-group">
                 <button class="btn btn-info mt-2 text-white">Update<button>
             </div>   
             {{form_end(form)}}
         </div>
-    </div>
-    
+    </div>    
 </div>
 {% endblock %}

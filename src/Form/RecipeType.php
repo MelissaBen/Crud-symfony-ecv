@@ -14,6 +14,10 @@ class RecipeType extends AbstractType
         $builder
             ->add('title')
             ->add('subtitle')
+            ->add('preparationTime')
+            ->add('cookingTime')
+            ->add('steps')
+            
             /*->add('Collection')*/
         ;
     }

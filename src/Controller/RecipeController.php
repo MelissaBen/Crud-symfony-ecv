@@ -24,6 +24,18 @@ class RecipeController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/recipeForm", name="RecipeForm")
+     */
+    public function form(): Response
+    {
+        $data = $this->getDoctrine()->getRepository(Recipe::class)->findAll();
+        return $this->render('recipe/form.html.twig', [
+            'controller_name' => 'RecipeController',
+             'data' => $data
+
+        ]);
+    }
      /**
      * @Route("/createRecipe", name="createRecipe")
      */
@@ -48,7 +60,7 @@ class RecipeController extends AbstractController
     }
 
     /**
-     * @Route("/update{id}", name="updateRecipe")
+     * @Route("/{id}/edit", name="updateRecipe", methods={"GET","POST"})
      */
 
       public function update(Request $request , $id)
@@ -71,8 +83,8 @@ class RecipeController extends AbstractController
        ]);
     }
 
-        /**
-     * @Route("/delete{id}", name="deleteRecipe")
+      /**
+     * @Route("/{id}/delete", name="deleteRecipe")
      */
 
       public function delete($id)
@@ -84,7 +96,7 @@ class RecipeController extends AbstractController
         $em->remove($data);
         $em->flush();
 
-        $this->addFlash('success','Remove successfully!');
+        $this->addFlash('sucess','Remove successfully!');
 
         return $this->redirectToRoute('recipe');
         

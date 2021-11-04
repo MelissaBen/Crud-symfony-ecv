@@ -7,13 +7,14 @@
   <div class="col-sm-6">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">{{data.name}}</h5>
-        <p class="card-text">{{data.type}}</p>
+        <h5 class="card-title"> nom :  {{data.name}}</h5>
+        <p class="card-text"> type: {{data.type}}</p>
           {% if data.image is defined %}
             <img class="card-img-top" src="{{ asset ('images/')~ data.image.name}}" alt="Carcap">
          {% endif %}
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+          <a href="{{ path('update' , {'id': data.id }) }}" class="btn btn-warning m-2">Modifier</a>
       </div>
+      
     </div>
   </div>
     {% endfor %}
@@ -27,6 +28,14 @@
     </div>
 
 </div>
+
+<style>
+img {
+   width : 20px;
+   border : 1px solid black
+
+}
+</style>
 
 {% endblock %}
 
