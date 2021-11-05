@@ -4,7 +4,7 @@
 {% block body %}
 <div class="row">
    {% for data in data  %}
-  <div class="col-sm-6">
+  <div class="col-sm-4">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title"> nom :  {{data.name}}</h5>
@@ -18,6 +18,8 @@
     </div>
   </div>
     {% endfor %}
+  </div>
+  
     <div class="m-3">
         <div class="form-group">
                     <a href="{{path('createIngredient')}}" class="btn btn-info mt-2 text-white">Ajouter un ingredient</a>
@@ -27,7 +29,7 @@
         </div>
     </div>
 
-</div>
+
 
 <style>
 img {
