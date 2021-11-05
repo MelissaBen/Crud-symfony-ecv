@@ -3,9 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Recipe;
+use App\Form\IngredientType;
 use Symfony\Component\Form\AbstractType;
+
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class RecipeType extends AbstractType
 {
@@ -14,6 +17,17 @@ class RecipeType extends AbstractType
         $builder
             ->add('title')
             ->add('subtitle')
+            ->add('preparationTime')
+            ->add('cookingTime')
+            ->add('steps')
+            ->add('ingredients', CollectionType::class, [
+				'entry_type' => IngredientType::class,
+				'entry_options' => ['label' => false],
+				'allow_add' => true,
+				'allow_delete' => true,
+				'by_reference' => false,
+			])
+            
             /*->add('Collection')*/
         ;
     }

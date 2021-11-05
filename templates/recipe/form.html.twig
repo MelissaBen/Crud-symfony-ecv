@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    <div class="container">
+    <h1 class="m-3 text-center"> les recettes</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Temps de preparation</th>
+                <th scope="col">Temps de cuisson</th>
+                <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for data in data  %}
+                <tr>
+                <th scope="row"> {{data.id}}</th>
+                <td>{{data.title}}</td>
+                <td>{{ data.preparationTime ? data.preparationTime|date('H:i:s') : '' }}</td>
+                <td>{{ data.cookingTime ? data.cookingTime|date('H:i:s') : '' }}</td>
+                <td>
+                   <a href="{{ path('updateRecipe' , {'id': data.id }) }}" class="btn btn-warning">Modifier</a>
+                   <a href="{{path('deleteRecipe' , {'id': data.id }) }}" class="btn btn-danger">Supprimer</a>
+                </td>
+                </tr>
+                <tr>
+            {% endfor %}
+
+             <div class="form-group">
+                <a href="{{path('createRecipe')}}" class="btn btn-info mt-2 text-white">Ajouter une recette </a>
+            </div>
+             <div class="form-group">
+                <a href="{{path('recipe')}}" class="btn btn-info mt-2 text-white">Les recettes </a>
+            </div>
+  
+            </tbody>
+        </table>
+</div>
+
+{% endblock %}
+

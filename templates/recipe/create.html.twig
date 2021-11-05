@@ -4,7 +4,6 @@
 
 <div class="container m-5">
     <div class="row">
-        <h3 class="mt-5 mb-5">Create form</h3>
         {% for message in app.flashes('sucess') %}
             <div class="alert alert-success">
             {{message}}
@@ -12,18 +11,38 @@
 
         {% endfor %}
         <div class="col-md-6 offset-md-3">
+           <h3 class="mt-5 mb-5"> Ajouter une recette </h3>
             {{form_start(form)}}
-            <div class="form-group">
+            <div class="form-group m-2">
                 {{form_label(form.title)}}
                 {{form_widget(form.title ,{'attr':{'class':'form-control'}})}}
             </div>    
-            <div class="form-group">
+            <div class="form-group m-2">
                 {{form_label(form.subtitle)}}
                 {{form_widget(form.subtitle ,{'attr':{'class':'form-control'}})}}
+                {{form_row(form.preparationTime)}}
+                {{form_row(form.cookingTime)}}
+                {{ form_row(form.steps) }}
             </div> 
+
+               <h3>Ingredients</h3>
+            <ul class="tags list-unstyled" data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e('html_attr') }}">
+
+                    {# iterate over each existing tag and render its only field: name #}
+                    {% for tag in form.ingredients %}
+                        <li class="mt-2">
+                            {{ form_widget(tag.name) }}
+                        </li>
+                    {% endfor %}
+            </ul>
+         
             <div class="form-group">
-                <button class="btn btn-info mt-2 text-white">Submit</button>
+                <button class="btn btn-info mt-2 text-white">Enregistrer</button>
             </div>   
+
+            <div class="form-group">
+                <a href="{{path('recipe')}}" class="btn btn-info mt-2 text-white">Les recettes </a>
+            </div>
             {{form_end(form)}}
         </div>
     </div>

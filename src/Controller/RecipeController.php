@@ -24,12 +24,29 @@ class RecipeController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/recipeForm", name="RecipeForm")
+     */
+    public function form(): Response
+    {
+        $data = $this->getDoctrine()->getRepository(Recipe::class)->findAll();
+        return $this->render('recipe/form.html.twig', [
+            'controller_name' => 'RecipeController',
+             'data' => $data
+
+        ]);
+    }
      /**
      * @Route("/createRecipe", name="createRecipe")
      */
     public function create(Request $request)
     {
+
+
+		
        $recipe = new Recipe();
+       $originalTags = $recipe->getIngredientsCollection();
+
        $form = $this->createForm(RecipeType::class , $recipe);
        $form->handleRequest($request);
 
@@ -37,6 +54,15 @@ class RecipeController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($recipe);
             $em->flush();
+            // Création des ingrédients
+			foreach ($originalTags as $tag) {
+				// Si la Recipe ne contient pas
+				if (false === $recipe->getIngredients()->contains($tag)) {
+					// remove the Task from the Tag
+					$entityManager->persist($tag);
+				}
+			}
+
 
             $this->addFlash('success', 'Votre ingrédient a bien été créé');
 
@@ -45,10 +71,11 @@ class RecipeController extends AbstractController
        return $this->render('recipe/create.html.twig',[
            'form' => $form -> createView()
        ]);
+       dd($originalTags);
     }
 
     /**
-     * @Route("/update{id}", name="updateRecipe")
+     * @Route("/{id}/edit", name="updateRecipe", methods={"GET","POST"})
      */
 
       public function update(Request $request , $id)
@@ -71,8 +98,8 @@ class RecipeController extends AbstractController
        ]);
     }
 
-        /**
-     * @Route("/delete{id}", name="deleteRecipe")
+      /**
+     * @Route("/{id}/delete", name="deleteRecipe")
      */
 
       public function delete($id)
@@ -84,7 +111,7 @@ class RecipeController extends AbstractController
         $em->remove($data);
         $em->flush();
 
-        $this->addFlash('success','Remove successfully!');
+        $this->addFlash('sucess','Remove successfully!');
 
         return $this->redirectToRoute('recipe');
         

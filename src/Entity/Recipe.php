@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\Collection;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\RecipeRepository;
-
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -46,14 +46,34 @@ class Recipe
     private $averageRate;
 
 
+    /**
+     * @ORM\Column(type="time", nullable=true)
+     */
+    private $preparationTime;
+
+    /**
+     * @ORM\Column(type="time", nullable=true)
+     */
+    private $cookingTime;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+
+    private $steps = [];
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Ingredient", cascade={"persist"})
+     */
+    private $ingredients;
+
 
     public function __construct()
     {
+        $this->ingredients = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->rates = new ArrayCollection();
     }
-
-
 
     public function getId(): ?int
     {
@@ -102,6 +122,18 @@ class Recipe
         return $this;
     }
 
+    public function getPreparationTime(): ?\DateTimeInterface
+    {
+        return $this->preparationTime;
+    }
+
+    public function setPreparationTime(?\DateTimeInterface $preparationTime): self
+    {
+        $this->preparationTime = $preparationTime;
+
+        return $this;
+    }
+
     public function removeComment(Comment $comment): self
     {
         if ($this->comments->removeElement($comment)) {
@@ -110,6 +142,17 @@ class Recipe
                 $comment->setRecipe(null);
             }
         }
+        return $this;
+    }
+
+    public function getCookingTime(): ?\DateTimeInterface
+    {
+        return $this->cookingTime;
+    }
+
+    public function setCookingTime(?\DateTimeInterface $cookingTime): self
+    {
+        $this->cookingTime = $cookingTime;
 
         return $this;
     }
@@ -128,6 +171,34 @@ class Recipe
             $this->rates[] = $rate;
             $rate->setRecipe($this);
         }
+        return $this;
+    }
+    public function getSteps(): ?array
+    {
+        return $this->steps;
+    }
+
+    public function setSteps(?array $steps): self
+    {
+        $this->steps = $steps;
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection|Ingredient[]
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function addIngredient(Ingredient $ingredient): self
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients[] = $ingredient;
+        }
 
         return $this;
     }
@@ -139,6 +210,13 @@ class Recipe
             if ($rate->getRecipe() === $this) {
                 $rate->setRecipe(null);
             }
+        }
+        return $this;
+    }
+    public function removeIngredient(Ingredient $ingredient): self
+    {
+        if ($this->ingredients->contains($ingredient)) {
+            $this->ingredients->removeElement($ingredient);
         }
 
         return $this;
@@ -154,5 +232,18 @@ class Recipe
         $this->averageRate = $averageRate;
 
         return $this;
+    }
+    public function getIngredientsCollection()
+    {
+        $ingredientsCollection = new ArrayCollection();
+
+        foreach ($this->getIngredients() as $ingredient) {
+            $ingredientsCollection->add($ingredient);
+        }
+        return $ingredientsCollection;
+    }
+    public function __toString()
+    {
+        return $this->title;
     }
 }

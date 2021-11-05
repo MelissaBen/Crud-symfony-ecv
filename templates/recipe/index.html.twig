@@ -4,37 +4,34 @@
 {% block body %}
 
     <div class="container">
-    <h1> les ingredient</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Content</th>
-                <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for data in data  %}
-                <tr>
-                <th scope="row"> {{data.id}}</th>
-                <td>{{data.title}}</td>
-                <td>{{data.subtitle}}</td>
-                <td>
-                   <a href="{{ path('update' , {'id': data.id }) }}" class="btn btn-warning">Modifier</a>
-                   <a href="{{path('delete' , {'id': data.id }) }}" class="btn btn-danger">Supprimer</a>
-                </td>
-                </tr>
-                <tr>
-            {% endfor %}
+    <h1 class="m-3 text-center"> les recettes</h1>
+    <div class="row">
+        <div class="col-sm-6">
+         {% for data in data  %}
+            <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">titre : {{data.title}}</h5>
+                <p class="card-text"> description : {{data.subtitle}}.</p>
+                <p class="card-text">temps de cuisson : {{data.cookingTime ? data.cookingTime|date('H:i:s') : '' }}.</p>
+                <p class="card-text">temps de préparation :{{data.preparationTime ? data.cookingTime|date('H:i:s') : '' }}.</p>
+                <a href="ingredient" class="btn btn-primary">Voir les ingredients</a>
+                <a href="{{ path('updateRecipe' , {'id': data.id }) }}" class="btn btn-warning">Modifier</a>
+                <a href="{{path('comment_index', {'id': data.id}) }}"  class="btn btn-info"> Commentaire </a>
 
-             <div class="form-group">
-                <a href="{{path('createRecipe')}}" class="btn btn-info mt-2 text-white">Ajouter un article</a>
             </div>
-  
-            </tbody>
-        </table>
-</div>
+
+            </div>
+        {% endfor %}
+
+        <div class="form-group">
+            <a href="{{path('createRecipe')}}" class="btn btn-info mt-2 text-white">Ajouter une recette </a>
+        </div>
+        <div class="form-group">
+            <a href="{{path('RecipeForm')}}" class="btn btn-info mt-2 text-white">Accéder au tableau des recettes </a>
+        </div>
+
+        </div>
+    
 
 {% endblock %}
 

@@ -3,26 +3,34 @@
 {% block body %}
 
 <div class="container m-5">
-        <h3 class="mt-5 mb-5"> Creer un ingredient </h3>
+    <h3 class="mt-5 mb-5 text-center"> Ajouter un ingredient</h3>
 
     <div class="row">
         {% for message in app.flashes('sucess') %}
             <div class="alert alert-success">
             {{message}}
             </div>
-
         {% endfor %}
         <div class="col-md-6 offset-md-3">
             {{form_start(form)}}
             <div class="form-group">
                 {{form_label(form.name)}}
                 {{form_widget(form.name ,{'attr':{'class':'form-control'}})}}
-            </div>    
+            </div> 
             <div class="form-group">
-                <button class="btn btn-info mt-2 text-white">Submit</button>
+                {{form_row(form.image)}}
+                {{form_row(form.type)}}
+            </div> 
+   
+            <div class="form-group">
+                <button class="btn btn-info mt-2 text-white">Enregistrer</button>
             </div>   
             {{form_end(form)}}
         </div>
+    </div>
+
+    <div class="form-group">
+                <a href="{{path('ingredientForm')}}" class="btn btn-info mt-2 text-white">Acceder au tableau des ingredients </a>
     </div>
     
 </div>
