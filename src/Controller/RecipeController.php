@@ -41,7 +41,12 @@ class RecipeController extends AbstractController
      */
     public function create(Request $request)
     {
+
+
+		
        $recipe = new Recipe();
+       $originalTags = $recipe->getIngredientsCollection();
+
        $form = $this->createForm(RecipeType::class , $recipe);
        $form->handleRequest($request);
 
@@ -49,6 +54,15 @@ class RecipeController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($recipe);
             $em->flush();
+            // Création des ingrédients
+			foreach ($originalTags as $tag) {
+				// Si la Recipe ne contient pas
+				if (false === $recipe->getIngredients()->contains($tag)) {
+					// remove the Task from the Tag
+					$entityManager->persist($tag);
+				}
+			}
+
 
             $this->addFlash('success', 'Votre ingrédient a bien été créé');
 
@@ -57,6 +71,7 @@ class RecipeController extends AbstractController
        return $this->render('recipe/create.html.twig',[
            'form' => $form -> createView()
        ]);
+       dd($originalTags);
     }
 
     /**
